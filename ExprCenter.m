@@ -2,12 +2,15 @@
 
 %% ファイルを読み込み、フレームを表示する。ファイルの拡張子に応じて処理を分ける
 
+File = "2023-06-15-NV12-3840x2160_fast.mov"; % 画像/動画のパスを入れる
+
+
 %処理ごとに対応する拡張子のリストを作る
 MovieEXT = [".mp4", ".mov"];
 PictureEXT = [".png"];
 Tiff = [".tiff"];
 
-File = "2023-06-15-NV12-3840x2160_fast.mov";
+
 [Path, name, ext]=fileparts(File);
 
 if ismember(ext, MovieEXT)
@@ -35,11 +38,11 @@ imshow(Frame)
 title("周の決定")
 TrajAxes=gca;
 Circle_Circumference = ginput(15);
-writematrix(Circle_Circumference, "Circumference.csv");
+writematrix(Circle_Circumference, "Circumference.csv");%クリックした座標を別ファイルに保存
 
 %% 円のパラメーターを推定し、中心座標と直径を取得
 
-% 初期係数の推定
+% 初期係数の推定（適宜変更）
 initial_guess = [600; 350; 600];
 
 % 最小二乗法を使用して楕円の方程式の係数を求める
@@ -56,6 +59,12 @@ disp(Circle_params(3)*2)
 hold(TrajAxes, "on")
 fimplicit(@(x,y) (Circle_params(1) - x).^2 + (Circle_params(2) - y).^2 -Circle_params(3).^2, "LineWidth",2)
 hold off
+
+%円のデータをxmlに保存
+circle = struct;
+circle.center = [Circle_params(1), Circle_params(2)];
+circle.R = Circle_params(1);
+writestruct(circle,"circleInfo.xml");
 
 
 
