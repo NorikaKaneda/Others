@@ -7,20 +7,20 @@ MovieEXT = [".mp4", ".mov"];
 PictureEXT = [".png"];
 Tiff = [".tiff"];
 
-File = "フレーム-24-03-2024-05-06-03.tiff";
-[Path, name, ext]=fileparts(FilePass);
+File = "2023-06-15-NV12-3840x2160_fast.mov";
+[Path, name, ext]=fileparts(File);
 
 if ismember(ext, MovieEXT)
     %動画から最後のフレームを抽出
-    Movie = VideoReader(FilePass);
+    Movie = VideoReader(File);
     % 最後のフレームを読み込む
     Frame = read(Movie, Movie.NumFrames);
     % 最後のフレームを保存
     imwrite(Frame, "Frame.png");
 elseif ismember(ext, PictureEXT)
-    Frame = imread(FilePass);
+    Frame = imread(File);
 elseif ismember(ext, Tiff)
-    t = imread(FilePass);
+    t = imread(File);
     if ndims(t) == 3 && size(t, 3) > 1
     % 複数の平面を持つ場合は、最初の平面を使用します
     rgbImage = t(:,:,1:3);
@@ -54,7 +54,7 @@ disp(Circle_params(3)*2)
 
 %重ねて表示
 hold(TrajAxes, "on")
-fimplicit(@(x,y) (Circle_params(1) - x).^2 + (Circle_params(2) - y).^2 -Circle_params(3).^2, "LineWidth",3)
+fimplicit(@(x,y) (Circle_params(1) - x).^2 + (Circle_params(2) - y).^2 -Circle_params(3).^2, "LineWidth",2)
 hold off
 
 
