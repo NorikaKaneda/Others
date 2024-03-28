@@ -1,18 +1,25 @@
 % 画像を読み込み、クリックされた画像上の15点からその中心を求めるプログラム
 
-%% ファイルを読み込む。画像であればそのまま、動画であれば最後のフレームを出力
-Movie_ = 2; % 動画なら1、画像なら0、tiffなら2
-FilePass = "C:\Users\no5ri\OneDrive - The University of Tokyo\フォルダ\大学\授業課題等\卒業研究\自習\MATLAB\Others\フレーム-24-03-2024-05-06-03.tiff";
-if Movie_==1
+%% ファイルを読み込み、フレームを表示する。ファイルの拡張子に応じて処理を分ける
+
+%処理ごとに対応する拡張子のリストを作る
+MovieEXT = [".mp4", ".mov"];
+PictureEXT = [".png"];
+Tiff = [".tiff"];
+
+File = "フレーム-24-03-2024-05-06-03.tiff";
+[Path, name, ext]=fileparts(FilePass);
+
+if ismember(ext, MovieEXT)
     %動画から最後のフレームを抽出
     Movie = VideoReader(FilePass);
     % 最後のフレームを読み込む
     Frame = read(Movie, Movie.NumFrames);
     % 最後のフレームを保存
     imwrite(Frame, "Frame.png");
-elseif Movie_==0
+elseif ismember(ext, PictureEXT)
     Frame = imread(FilePass);
-elseif Movie_==2
+elseif ismember(ext, Tiff)
     t = imread(FilePass);
     if ndims(t) == 3 && size(t, 3) > 1
     % 複数の平面を持つ場合は、最初の平面を使用します
