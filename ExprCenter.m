@@ -19,7 +19,7 @@ if ismember(ext, MovieEXT)
     % 最後のフレームを読み込む
     Frame = read(Movie, Movie.NumFrames);
     % 最後のフレームを保存
-    imwrite(Frame, "Frame.png");
+    imwrite(Frame, append(Path,name,"-Frame.png"));
 elseif ismember(ext, PictureEXT)
     Frame = imread(File);
 elseif ismember(ext, Tiff)
@@ -38,7 +38,7 @@ imshow(Frame)
 title("周の決定")
 TrajAxes=gca;
 Circle_Circumference = ginput(15);
-writematrix(Circle_Circumference, "Circumference.csv");%クリックした座標を別ファイルに保存
+writematrix(Circle_Circumference, append(Path, name, "-Circumference.csv"));%クリックした座標を別ファイルに保存
 
 %% 円のパラメーターを推定し、中心座標と直径を取得
 
@@ -64,7 +64,7 @@ hold off
 circle = struct;
 circle.center = [Circle_params(1), Circle_params(2)];
 circle.R = Circle_params(1);
-writestruct(circle,"circleInfo.xml");
+writestruct(circle,append(Path, name, "-CircleInfo.xml"));
 
 
 
